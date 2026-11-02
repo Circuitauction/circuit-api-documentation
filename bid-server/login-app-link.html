@@ -46,7 +46,7 @@
     <ul class="mb-0">
       <li><strong>Base URL:</strong> the bid server of the auction house, given by Circuit with the partner secret. The examples use <code>https://bids.example.com/</code>.</li>
       <li><strong>Authentication:</strong> an HMAC-SHA256 signature (<code>sig</code>) over the query values, made with the site's <em>partner link secret</em> (configured per site on the bid server).</li>
-      <li><strong>Audience:</strong> bidders coming from a partner platform. The bidder must already exist as a client of the auction house, with the customer number the partner knows.</li>
+      <li><strong>Audience:</strong> bidders coming from a partner platform. The bidder must already exist as a client of the auction house, carrying the bidder's customer ID on the partner platform.</li>
     </ul>
   </div>
 
@@ -67,7 +67,7 @@
           <tbody>
             <tr><td><code>site</code></td><td>string</td><td>Site login name. Must resolve to an existing site on the bid server.</td><td><code>koehler</code></td></tr>
             <tr><td><code>sale_number</code></td><td>string</td><td>Sale number within that site. Must resolve to an existing sale.</td><td><code>377</code></td></tr>
-            <tr><td><code>customer</code></td><td>digits</td><td>The auction house's <strong>customer number</strong> of the bidder (the number the house assigned when it activated the bidder on the partner platform). Not the bidder (paddle) number of the sale. It is the same number the house reports back with the lot results.</td><td><code>107011</code></td></tr>
+            <tr><td><code>customer</code></td><td>digits</td><td>The bidder's <strong>Philasearch customer ID</strong>, as stored on the auction house's client. Not the bidder (paddle) number of the sale. It is the same number the house reports back with the lot results.</td><td><code>107011</code></td></tr>
             <tr><td><code>ts</code></td><td>integer</td><td>Unix time in seconds at which the link was generated. The link is accepted for <strong>10 minutes</strong> around this time.</td><td><code>1761250000</code></td></tr>
             <tr><td><code>sig</code></td><td>hex string</td><td>Lower-case hex HMAC-SHA256 of the string <code>site|sale_number|customer|ts</code> (the four values joined with <code>|</code>, no spaces), keyed with the site's partner link secret.</td><td><code>9f2c&hellip;e1</code></td></tr>
           </tbody>
