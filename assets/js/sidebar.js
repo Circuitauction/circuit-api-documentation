@@ -14,6 +14,7 @@
     {
       label: 'Bid Server', id: 'sb-bid-server', children: [
         { label: 'One-Time Login to App', href: 'bid-server/login-app-mail.html' },
+        { label: 'Partner Login Link', href: 'bid-server/login-app-link.html' },
       ]
     },
     {
