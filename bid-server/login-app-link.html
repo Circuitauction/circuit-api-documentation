@@ -67,7 +67,7 @@
           <tbody>
             <tr><td><code>site</code></td><td>string</td><td>Site login name. Must resolve to an existing site on the bid server.</td><td><code>koehler</code></td></tr>
             <tr><td><code>sale_number</code></td><td>string</td><td>Sale number within that site. Must resolve to an existing sale.</td><td><code>377</code></td></tr>
-            <tr><td><code>customer</code></td><td>digits</td><td>The auction house's customer number of the bidder (the number the house assigned when it activated the bidder on the partner platform).</td><td><code>107011</code></td></tr>
+            <tr><td><code>customer</code></td><td>digits</td><td>The auction house's <strong>customer number</strong> of the bidder (the number the house assigned when it activated the bidder on the partner platform). Not the bidder (paddle) number of the sale. It is the same number the house reports back with the lot results.</td><td><code>107011</code></td></tr>
             <tr><td><code>ts</code></td><td>integer</td><td>Unix time in seconds at which the link was generated. The link is accepted for <strong>10 minutes</strong> around this time.</td><td><code>1761250000</code></td></tr>
             <tr><td><code>sig</code></td><td>hex string</td><td>Lower-case hex HMAC-SHA256 of the string <code>site|sale_number|customer|ts</code> (the four values joined with <code>|</code>, no spaces), keyed with the site's partner link secret.</td><td><code>9f2c&hellip;e1</code></td></tr>
           </tbody>
@@ -104,8 +104,8 @@ url = 'https://test-bids-eu.circuitauction.com/api/login-app-link?' + urlencode(
           <thead><tr><th>Case</th><th>Response</th></tr></thead>
           <tbody>
             <tr><td>Link valid, bidder found</td><td><code>302</code> to the auction house website, which exchanges a one-time login hash for a session and opens the live client on the sale (<code>/live/#/sale/&lt;sale uuid&gt;</code>). The bidder sees the sale, logged in.</td></tr>
-            <tr><td>Link valid, customer number unknown or the bidder's account is blocked</td><td><code>302</code> to the website login page with the live sale as the return URL, so the bidder can log in with email and password. The auction house must create / activate the client first.</td></tr>
-            <tr><td>Missing parameter, invalid or missing <code>sig</code>, link older than 10 minutes, link already used, unknown site or sale, site without a partner secret</td><td><code>400</code> with a JSON body (see below). These are integration errors, not bidder errors.</td></tr>
+            <tr><td>Link valid, but the customer number is unknown, the client has no bidder account on the bid server yet, or that account is blocked</td><td><code>302</code> to the website login page with the live sale as the return URL, so the bidder can log in with email and password. The auction house must create / activate the client first.</td></tr>
+            <tr><td>Missing parameter, <code>customer</code> or <code>ts</code> not digits, invalid <code>sig</code>, <code>ts</code> more than 10 minutes away from the server time, link already used, unknown site or sale, site without a partner secret or without a website URL</td><td><code>400</code> with a JSON body (see below). These are integration errors, not bidder errors.</td></tr>
           </tbody>
         </table>
       </div>
