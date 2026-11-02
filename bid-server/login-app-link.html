@@ -44,7 +44,7 @@
       This endpoint lives on the <strong>Bid Server</strong>, <em>not</em> the Backoffice API documented in the rest of this site. It is opened by the <strong>bidder's browser</strong>, so nothing secret may appear in the URL: the partner signs each link with a per-site shared secret instead of sending an API key.
     </p>
     <ul class="mb-0">
-      <li><strong>Base URL (test):</strong> <code>https://test-bids-eu.circuitauction.com/</code></li>
+      <li><strong>Base URL:</strong> the bid server of the auction house, given by Circuit with the partner secret. The examples use <code>https://bids.example.com/</code>.</li>
       <li><strong>Authentication:</strong> an HMAC-SHA256 signature (<code>sig</code>) over the query values, made with the site's <em>partner link secret</em> (configured per site on the bid server).</li>
       <li><strong>Audience:</strong> bidders coming from a partner platform. The bidder must already exist as a client of the auction house, with the customer number the partner knows.</li>
     </ul>
@@ -87,7 +87,7 @@ sig     = hex( HMAC_SHA256( key = partner_link_secret, message ) )</code></pre>
   'ts' => time(),
 ];
 $params['sig'] = hash_hmac('sha256', implode('|', $params), $secret);
-$url = 'https://test-bids-eu.circuitauction.com/api/login-app-link?' . http_build_query($params);</code></pre>
+$url = 'https://bids.example.com/api/login-app-link?' . http_build_query($params);</code></pre>
 
       <h6>Python</h6>
       <pre><code class="language-python">import hmac, hashlib, time
@@ -96,7 +96,7 @@ from urllib.parse import urlencode
 params = {'site': 'koehler', 'sale_number': '377', 'customer': '107011', 'ts': int(time.time())}
 message = '|'.join(str(params[k]) for k in ('site', 'sale_number', 'customer', 'ts'))
 params['sig'] = hmac.new(secret.encode(), message.encode(), hashlib.sha256).hexdigest()
-url = 'https://test-bids-eu.circuitauction.com/api/login-app-link?' + urlencode(params)</code></pre>
+url = 'https://bids.example.com/api/login-app-link?' + urlencode(params)</code></pre>
 
       <h5>Responses</h5>
       <div class="table-responsive">
